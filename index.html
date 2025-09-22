@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claro 2025</title>
+
+  <link rel="icon" type="image/png" href="archivos/images.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Reloj en la esquina -->
+  <div id="clock"></div>
+
+  <div class="platform">
+    <div class="card">
+      <img src="archivos/overlap.png" alt="Principal" class="logo">
+      <h1>Plataforma </h1>
+
+      <!-- Botones principales -->
+      <div class="btn-group-main">
+        <a href="Consultoria.html" class="btn">Consultoría</a>
+        <a href="Operacion.html" class="btn">Operación</a>
+        <a href="Data.html" class="btn">Data</a>
+        <a href="Tecnologia.html" class="btn">Tecnología</a>
+      </div>
+
+      <!-- Zona secundaria -->
+      <p class="sub-title">Otras opciones</p>
+      <div class="btn-group-extra">
+        <a href="Reportes.html" class="btn">Reportes</a>
+        <a href="Usuarios.html" class="btn">Usuarios</a>
+        <a href="Soporte.html" class="btn">Soporte</a>
+        <a href="organigrama.html" class="btn">Organigrama</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script para la hora en formato 12h -->
+  <script>
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // el 0 se convierte en 12
+      const mins = minutes < 10 ? '0' + minutes : minutes;
+      document.getElementById('clock').textContent = `${hours}:${mins} ${ampm}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
+
+
