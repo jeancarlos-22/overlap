@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Organigrama</title>
+  <style>
+    :root{ --bg:#f7f7f9; --card:#fff; --accent:#0b6cff; --muted:#666; --line:#cfd8e3 }
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); margin:0; padding:24px}
+    .container{max-width:1200px; margin:0 auto}
+    h1{font-size:20px; margin:0 0 18px}
+
+    /* basic org chart layout using CSS grid */
+    .org{display:grid; grid-template-columns: 1fr 1fr; gap:40px}
+    .chart{background:transparent; padding:16px}
+    .box{background:var(--card); border:1px solid var(--line); padding:10px 14px; border-radius:10px; box-shadow:0 6px 18px rgba(11,108,255,0.06); min-width:180px}
+    .title{font-weight:700; color:#111}
+    .sub{font-size:13px; color:var(--muted); margin-top:6px}
+
+    /* connectors */
+    .tree{display:flex; flex-direction:column; align-items:center}
+    .children{display:flex; gap:24px; margin-top:18px; justify-content:center}
+    .connector{width:2px; background:var(--line); height:18px}
+
+    /* responsive single-column on small screens */
+    @media (max-width:900px){ .org{grid-template-columns:1fr} }
+
+    /* small utility */
+    .node{display:flex; flex-direction:column; align-items:center}
+    .details{margin-top:8px; font-size:13px; color:var(--muted); text-align:center}
+    .group-title{font-weight:700; margin-bottom:8px}
+
+    /* special styling for emphasis */
+    .highlight{border-color:rgba(11,108,255,0.25); box-shadow:0 6px 20px rgba(11,108,255,0.08)}
+
+    /* humble legend */
+    .legend{margin-top:18px; font-size:13px; color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Organigrama </h1>
+
+    <div class="org">
+      <!-- Left chart: Pilar / Miguel -> Mileidy -> team -->
+      <section class="chart" aria-label="Equipo central">
+        <div class="tree">
+          <div class="box" style="text-align:center">
+            <div class="title">Claro/ Alvaro Lucini</div>
+            <div class="sub">Dirección</div>
+          </div>
+
+          <div class="connector" style="height:22px; margin-top:6px"></div>
+
+          <div class="box highlight" style="margin-top:10px; text-align:center">
+            <div class="title">Aleja Barriga</div>
+            <div class="sub">Lider</div>
+          </div>
+
+          <div class="children" style="width:100%">
+           
+        <div style="margin-top:14px; display:flex; justify-content:center">
+          <div class="box" style="max-width:520px;text-align:left">
+            <div class="title">Consultoria</div>
+            <div class="sub">Lider Operaciones / Consultoría</div>
+
+            <div class="details" style="margin-top:10px">
+              <strong>Áreas claves:</strong><br>
+              - Consultoría / Perfil éxito<br>
+              - Programas (consultores, especialistas, analistas)<br>
+              - Operación / Plan / Demanda / FCR<br>
+              - Data (reportes / UMC / UMM)<br>
+              - Técnico (soporte / dimensiones / React)
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; display:flex; justify-content:center">
+          <div class="box" style="max-width:520px;text-align:left">
+            <div class="title">Operacion</div>
+            <div class="sub">***</div>
+
+            <div class="details" style="margin-top:10px">
+              <strong>Áreas claves:</strong><br>
+              - Consultoría / Perfil éxito<br>
+              - Programas (consultores, especialistas, analistas)<br>
+              - Operación / Plan / Demanda / FCR<br>
+              - Data (reportes / UMC / UMM)<br>
+              - Técnico (soporte / dimensiones / React)
+            </div>
+          </div>
+
+          <div style="margin-top:14px; display:flex; justify-content:center">
+          <div class="box" style="max-width:520px;text-align:left">
+            <div class="title">Data</div>
+            <div class="sub">*</div>
+
+            <div class="details" style="margin-top:10px">
+              <strong>Áreas claves:</strong><br>
+              - Consultoría / Perfil éxito<br>
+              - Programas (consultores, especialistas, analistas)<br>
+              - Operación / Plan / Demanda / FCR<br>
+              - Data (reportes / UMC / UMM)<br>
+              - Técnico (soporte / dimensiones / React)
+            </div>
+          </div>
+        </div>
+
+
+<div style="margin-top:14px; display:flex; justify-content:center">
+          <div class="box" style="max-width:520px;text-align:left">
+            <div class="title">Tecnologia</div>
+            <div class="sub">**********--</div>
+
+            <div class="details" style="margin-top:10px">
+              <strong>Áreas claves:</strong><br>
+              - Consultoría / Perfil éxito<br>
+              - Programas (consultores, especialistas, analistas)<br>
+              - Operación / Plan / Demanda / FCR<br>
+              - Data (reportes / UMC / UMM)<br>
+              - Técnico (soporte / dimensiones / React)
+            </div>
+          </div>
+        </div>
+       
+
+  <script>
+    // pequeño helper: permitir copiar el HTML de un nodo al click (útil para editar rápido)
+    document.querySelectorAll('.box').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const txt = b.innerText.replace(/\n\s+/g,'\n');
+        navigator.clipboard?.writeText(txt).then(()=>{
+          b.style.transform='scale(0.998)';
+          setTimeout(()=>b.style.transform='',250);
+        }).catch(()=>{});
+      })
+    })
+  </script>
+</body>
+</html>
