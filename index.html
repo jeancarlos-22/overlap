@@ -3,24 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Claro 2025</title>
+  <title>Overlap 2025</title>
 
-  <link rel="icon" type="image/png" href="archivos/images.png">
+  <link rel="icon" type="image/png" href="archivos/overlap_2_logo.jfif">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Reloj en la esquina -->
-  <div id="clock"></div>
 
+  <!-- Reloj, fecha y calendario en la esquina superior derecha -->
+  <div id="clock-container">
+    <div id="clock"></div>
+    <div id="date"></div>
+    <table id="calendar"></table>
+  </div>
+
+  <!-- Contenedor central -->
   <div class="platform">
     <div class="card">
       <img src="archivos/overlap.png" alt="Principal" class="logo">
-      <h1>Plataforma </h1>
+      <h1>Main</h1>
 
       <!-- Botones principales -->
       <div class="btn-group-main">
-        <a href="Consultoria.html" class="btn">Consultoría</a>
-        <a href="Operacion.html" class="btn">Operación</a>
+        <a href="succesfactor.html" class="btn" target="_blank" rel="noopener noreferrer">
+         <img src="archivos/SuccesFactors.png" alt="Logo Succes Factor" class="logo-icon">
+           Succes Factor - Claro
+          </a>
+          
+
+
+        <a href="Operacion.html" class="btn">
+          <img src="archivos/" alt="Logo Claro Convergencia" class="logo-icon">
+          Convergencia - Claro
+        </a>
+
         <a href="Data.html" class="btn">Data</a>
         <a href="Tecnologia.html" class="btn">Tecnología</a>
       </div>
@@ -36,7 +52,7 @@
     </div>
   </div>
 
-  <!-- Script para la hora en formato 12h -->
+  <!-- Script para reloj, fecha y calendario -->
   <script>
     function updateClock() {
       const now = new Date();
@@ -44,14 +60,52 @@
       const minutes = now.getMinutes();
       const ampm = hours >= 12 ? 'PM' : 'AM';
       hours = hours % 12;
-      hours = hours ? hours : 12; // el 0 se convierte en 12
+      hours = hours ? hours : 12;
       const mins = minutes < 10 ? '0' + minutes : minutes;
       document.getElementById('clock').textContent = `${hours}:${mins} ${ampm}`;
+
+      const options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+      document.getElementById('date').textContent = now.toLocaleDateString('es-ES', options);
     }
+
+    function buildCalendar() {
+      const calendarEl = document.getElementById('calendar');
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const lastDate = new Date(year, month + 1, 0).getDate();
+
+      const monthName = now.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+      let html = `<caption>${monthName}</caption>`;
+      html += '<tr><th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th></tr>';
+
+      let day = 1;
+      for (let i = 0; i < 6; i++) {
+        html += '<tr>';
+        for (let j = 0; j < 7; j++) {
+          if (i === 0 && j < firstDay) {
+            html += '<td></td>';
+          } else if (day > lastDate) {
+            html += '<td></td>';
+          } else {
+            const today = (day === now.getDate()) ? 'today' : '';
+            html += `<td class="${today}">${day}</td>`;
+            day++;
+          }
+        }
+        html += '</tr>';
+        if (day > lastDate) break;
+      }
+      calendarEl.innerHTML = html;
+    }
+
+    // Actualiza cada segundo y genera el calendario una vez
     setInterval(updateClock, 1000);
     updateClock();
+    buildCalendar();
   </script>
+
 </body>
 </html>
-
-
