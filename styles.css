@@ -3,25 +3,26 @@ body {
   margin: 0;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start; /* Alinea a la izquierda */
+  align-items: flex-start;     /* Alinea arriba */
   background: linear-gradient(135deg, #6e6e6e 0%, #63ecec 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-attachment: fixed;
+  padding: 30px; /* espacio desde el borde */
 }
 
 /* =================== CONTENEDOR PRINCIPAL =================== */
 .platform {
   width: 90%;
-  max-width: 900px;
-  padding: 90px;
+  max-width: 1000px;
+  padding: 30px; /* lo ajustamos para que no quede tan ancho */
 }
 
 /* =================== TARJETA CENTRAL =================== */
 .card {
   background: #ffffff;
-  border-radius: 24px;
-  padding: 30px 30px;
+  border-radius: 40px;
+  padding: 20px 40px;
   box-shadow: 0 30px 90px rgba(0,0,0,0.25);
   text-align: center;
   animation: fadeIn 0.6s ease;
@@ -49,14 +50,57 @@ body {
   font-weight: 700;
 }
 
-/* =================== BOTONES =================== */
+/* =================== BOTONES PRINCIPALES =================== */
 .btn-group-main {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 10px;
-  margin-bottom: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
+.btn {
+  color: #fff;
+  text-decoration: none;
+  padding: 20px 12px;
+  min-width: 120px;
+  height: 120px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 6px rgba(0,0,0,0.2);
+  text-align: center;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Overlay oscuro para mejorar legibilidad */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  border-radius: inherit;
+  transition: background 0.3s ease;
+}
+.btn:hover::before {
+  background: rgba(0,0,0,0.2);
+}
+
+/* El texto va encima */
+.btn span {
+  position: relative;
+  z-index: 1;
+}
+
+/* =================== BOTONES EXTRA =================== */
 .btn-group-extra {
   display: flex;
   flex-wrap: wrap;
@@ -64,26 +108,15 @@ body {
   gap: 15px;
 }
 
-.btn {
-  background: #504f4f;
-  color: #fff;
-  text-decoration: none;
-  padding: 9px;
-  border-radius: 9px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 6px rgba(0,0,0,0.2);
-  text-align: center;
-}
-.btn:hover {
-  background: #97f0e4;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+.btn-group-extra .btn {
+  min-width: 130px;
+  padding: 8px 14px;
+  font-size: 1rem;
 }
 
+/* =================== SUBTITULOS =================== */
 .sub-title {
-  margin: 20px 0 10px;
+  margin: 10px 0 10px;
   font-size: 1.3rem;
   font-weight: 600;
   color: #555;
@@ -93,31 +126,31 @@ body {
 #clock-container {
   position: fixed;
   top: 10px;
-  right: 3px;
+  right: 10px;
   text-align: center;
-  background: rgba(0,0,0,0.6);
-  padding: 10px 14px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  color: #fff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 12px 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  color: #3b3b3b;
 }
 
 #clock {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: bold;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 #date {
   font-size: 1rem;
   margin-bottom: 8px;
-  color: #f1f1f1;
+  color: #020202;
 }
 
 #calendar {
   border-collapse: collapse;
-  background: #ffffff;
+  background: #f0f1f1;
   border-radius: 8px;
   overflow: hidden;
   margin: 0 auto;
@@ -126,7 +159,7 @@ body {
 }
 
 #calendar th, #calendar td {
-  border: 1px solid #ddd;
+  border: 1px solid #3f3e3e75;
   padding: 4px;
   width: 28px;
   height: 28px;
@@ -140,8 +173,77 @@ body {
 }
 
 #calendar td.today {
-  background: #97f0e4;
-  color: #000;
+  background: #07e738;
+  color: #494848;
   font-weight: bold;
   border-radius: 50%;
 }
+
+
+/* =================== BOTONES DINÁMICOS =================== */
+.btn {
+  color: #fff;
+  text-decoration: none;
+  padding: 20px 12px;
+  min-width: 140px;
+  height: 140px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  text-align: center;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Overlay para mejorar visibilidad del texto */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  border-radius: inherit;
+  transition: background 0.4s ease;
+}
+.btn:hover::before {
+  background: rgba(0,0,0,0.2);
+}
+
+/* Texto encima */
+.btn span {
+  position: relative;
+  z-index: 1;
+  font-size: 1rem;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
+/* Efecto hover: zoom + brillo */
+.btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+}
+
+/* ==== IMÁGENES DE FONDO ==== */
+.btn.succesfactor {
+  background-image: url("archivos/SuccesFactors.png");
+}
+.btn.siuc {
+  background-image: url("archivos/Icono siuc.png");
+}
+.btn.freshdesk {
+  background-image: url("archivos/Icono fresh desk.png");
+}
+.btn.conectados {
+  background-image: url("archivos/icono conectados.png");
+}
+
