@@ -4,18 +4,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Overlap 2025</title>
-
   <link rel="icon" type="image/png" href="archivos/overlap_2_logo.jfif">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Luces de alarma */
+    #holiday-alert {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      color: white;
+      background: red;
+      animation: blink 1s infinite;
+      z-index: 9999;
+    }
+    @keyframes blink {
+      0% { background: red; }
+      50% { background: yellow; color: black; }
+      100% { background: red; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Reloj, fecha y calendario en la esquina superior derecha -->
+  <!-- Alarma -->
+  <div id="holiday-alert">🎉 ¡Este mes hay días festivos! 🎉</div>
+
+  <!-- Reloj, fecha y calendario -->
   <div id="clock-container">
     <div id="clock"></div>
     <div id="date"></div>
-
-    <!-- Controles para navegar el calendario -->
     <div class="calendar-controls">
       <button onclick="prevMonth()">⟨ Mes anterior</button>
       <button onclick="goToday()">Hoy</button>
@@ -24,25 +46,19 @@
     <table id="calendar"></table>
   </div>
 
-  <!-- Contenedor central -->
   <div class="platform">
     <div class="card">
       <img src="archivos/Doc1.jpg" alt="Principal" class="logo">
       <h1>Menu</h1>
-
-      <!-- Botones principales -->
       <div class="btn-group-main">
-        <a href="succesfactor.html" class="btn succesfactor" target="_blank" rel="noopener noreferrer">
-          <span>Succes Factor</span>
-        </a>
+        <a href="succesfactor.html" class="btn succesfactor" target="_blank" rel="noopener noreferrer"><span>Succes Factor</span></a>
         <a href="#" class="btn siuc"><span>U Claro - SIUC</span></a>
         <a href="#" class="btn freshdesk"><span>Fresh Desk</span></a>
         <a href="#" class="btn conectados"><span>Conectados</span></a>
       </div>
-    </div> <!-- cierre card -->
-  </div> <!-- cierre platform -->
+    </div>
+  </div>
 
-  <!-- Script para reloj, fecha y calendario -->
   <script>
     // =================== RELOJ ===================
     function updateClock() {
@@ -50,16 +66,14 @@
       let hours = now.getHours();
       const minutes = now.getMinutes();
       const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      hours = hours ? hours : 12;
+      hours = hours % 12 || 12;
       const mins = minutes < 10 ? '0' + minutes : minutes;
       document.getElementById('clock').textContent = `${hours}:${mins} ${ampm}`;
-
       const options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
       document.getElementById('date').textContent = now.toLocaleDateString('es-ES', options);
     }
 
-    // =================== FESTIVOS EN COLOMBIA ===================
+    // =================== FESTIVOS COLOMBIA ===================
     const holidays = {
       "2025-01-01": "Año Nuevo",
       "2025-01-06": "Reyes Magos",
@@ -88,12 +102,14 @@
       const calendarEl = document.getElementById('calendar');
       const firstDay = new Date(year, month, 1).getDay();
       const lastDate = new Date(year, month + 1, 0).getDate();
-
       const monthName = new Date(year, month).toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+
       let html = `<caption>${monthName}</caption>`;
       html += '<tr><th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th></tr>';
 
       let day = 1;
+      let hasHolidayThisMonth = false;
+
       for (let i = 0; i < 6; i++) {
         html += '<tr>';
         for (let j = 0; j < 7; j++) {
@@ -107,6 +123,8 @@
             const holiday = holidays[dateKey] ? 'holiday' : '';
             const title = holidays[dateKey] ? `title="${holidays[dateKey]}"` : '';
 
+            if (holidays[dateKey]) hasHolidayThisMonth = true;
+
             html += `<td class="${today} ${holiday}" ${title}>${day}</td>`;
             day++;
           }
@@ -114,24 +132,30 @@
         html += '</tr>';
         if (day > lastDate) break;
       }
+
       calendarEl.innerHTML = html;
+
+      // =================== ALERTA DE FESTIVOS ===================
+      const alertBox = document.getElementById('holiday-alert');
+      if (hasHolidayThisMonth) {
+        alertBox.style.display = "block";
+        // Sonido de alarma
+        const audio = new Audio("https://www.soundjay.com/buttons/beep-07a.mp3");
+        audio.play();
+      } else {
+        alertBox.style.display = "none";
+      }
     }
 
     function prevMonth() {
       currentMonth--;
-      if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-      }
+      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
       buildCalendar(currentMonth, currentYear);
     }
 
     function nextMonth() {
       currentMonth++;
-      if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-      }
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
       buildCalendar(currentMonth, currentYear);
     }
 
@@ -146,7 +170,7 @@
     updateClock();
     buildCalendar();
   </script>
-
 </body>
 </html>
+
 
