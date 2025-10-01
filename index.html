@@ -14,22 +14,27 @@
   <div id="clock-container">
     <div id="clock"></div>
     <div id="date"></div>
+
+    <!-- Controles para navegar el calendario -->
+    <div class="calendar-controls">
+      <button onclick="prevMonth()">⟨ Mes anterior</button>
+      <button onclick="goToday()">Hoy</button>
+      <button onclick="nextMonth()">Mes siguiente ⟩</button>
+    </div>
     <table id="calendar"></table>
   </div>
 
   <!-- Contenedor central -->
   <div class="platform">
     <div class="card">
-      <img src="archivos/cropped-OVERLAP-Colombia (1).png" alt="Principal" class="logo">
-      <h1>Plataforma</h1>
+      <img src="archivos/Doc1.jpg" alt="Principal" class="logo">
+      <h1>Menu</h1>
 
       <!-- Botones principales -->
       <div class="btn-group-main">
         <a href="succesfactor.html" class="btn succesfactor" target="_blank" rel="noopener noreferrer">
-        <span>Succes Factor</span>
+          <span>Succes Factor</span>
         </a>
-
-        
         <a href="#" class="btn siuc"><span>U Claro - SIUC</span></a>
         <a href="#" class="btn freshdesk"><span>Fresh Desk</span></a>
         <a href="#" class="btn conectados"><span>Conectados</span></a>
@@ -39,6 +44,7 @@
 
   <!-- Script para reloj, fecha y calendario -->
   <script>
+    // =================== RELOJ ===================
     function updateClock() {
       const now = new Date();
       let hours = now.getHours();
@@ -53,16 +59,37 @@
       document.getElementById('date').textContent = now.toLocaleDateString('es-ES', options);
     }
 
-    function buildCalendar() {
-      const calendarEl = document.getElementById('calendar');
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth();
+    // =================== FESTIVOS EN COLOMBIA ===================
+    const holidays = {
+      "2025-01-01": "Año Nuevo",
+      "2025-01-06": "Reyes Magos",
+      "2025-03-24": "San José",
+      "2025-04-17": "Jueves Santo",
+      "2025-04-18": "Viernes Santo",
+      "2025-05-01": "Día del Trabajo",
+      "2025-06-02": "Ascensión del Señor",
+      "2025-06-23": "Corpus Christi",
+      "2025-06-30": "Sagrado Corazón",
+      "2025-07-20": "Día de la Independencia",
+      "2025-08-07": "Batalla de Boyacá",
+      "2025-08-18": "La Asunción",
+      "2025-10-13": "Día de la Raza",
+      "2025-11-03": "Todos los Santos",
+      "2025-11-17": "Independencia de Cartagena",
+      "2025-12-08": "Inmaculada Concepción",
+      "2025-12-25": "Navidad"
+    };
 
+    // =================== CALENDARIO ===================
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+
+    function buildCalendar(month = currentMonth, year = currentYear) {
+      const calendarEl = document.getElementById('calendar');
       const firstDay = new Date(year, month, 1).getDay();
       const lastDate = new Date(year, month + 1, 0).getDate();
 
-      const monthName = now.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+      const monthName = new Date(year, month).toLocaleString('es-ES', { month: 'long', year: 'numeric' });
       let html = `<caption>${monthName}</caption>`;
       html += '<tr><th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th></tr>';
 
@@ -75,8 +102,12 @@
           } else if (day > lastDate) {
             html += '<td></td>';
           } else {
-            const today = (day === now.getDate()) ? 'today' : '';
-            html += `<td class="${today}">${day}</td>`;
+            const today = (day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) ? 'today' : '';
+            const dateKey = `${year}-${String(month+1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const holiday = holidays[dateKey] ? 'holiday' : '';
+            const title = holidays[dateKey] ? `title="${holidays[dateKey]}"` : '';
+
+            html += `<td class="${today} ${holiday}" ${title}>${day}</td>`;
             day++;
           }
         }
@@ -86,7 +117,31 @@
       calendarEl.innerHTML = html;
     }
 
-    // Actualiza cada segundo y genera el calendario una vez
+    function prevMonth() {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      buildCalendar(currentMonth, currentYear);
+    }
+
+    function nextMonth() {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      buildCalendar(currentMonth, currentYear);
+    }
+
+    function goToday() {
+      currentMonth = new Date().getMonth();
+      currentYear = new Date().getFullYear();
+      buildCalendar(currentMonth, currentYear);
+    }
+
+    // =================== INICIALIZACIÓN ===================
     setInterval(updateClock, 1000);
     updateClock();
     buildCalendar();
@@ -94,3 +149,4 @@
 
 </body>
 </html>
+
